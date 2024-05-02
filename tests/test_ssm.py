@@ -17,6 +17,7 @@ SEARCH_SPRITE = f"{TEST_DIR}/search.svg"
 MENU_SPRITE = f"{TEST_DIR}/menu.svg"
 SEARCH_ID = "search"
 MENU_ID = "menu"
+EXPORTED_SVG = f"{ARTIFACT_DIR}/{SEARCH_ID}.svg"
 
 
 class TestSsm(unittest.TestCase):
@@ -133,6 +134,23 @@ class TestSsm(unittest.TestCase):
                         "Failed to export sprite from spritesheet.")
         tree = etree.fromstring(completed_process.stdout)
         self.assertEqual(len(tree.xpath(f"/svg/use[@href='{Path(SPRITESHEET_TWO_SPRITES).name}#{SEARCH_ID}']")), 1,  # noqa
+                         "Malformed spritesheet.")
+
+    def test_export_to_file(self):
+        completed_process = subprocess.run(["python",
+                                            "-m",
+                                            "ssm",
+                                            "export",
+                                            "-f",
+                                            f"{SPRITESHEET_TWO_SPRITES}",
+                                            f"{SEARCH_ID}"
+                                            "--dir",
+                                            f"{ARTIFACT_DIR}"])
+        self.assertTrue(completed_process.returncode == 0,
+                        "Failed to export sprite from spritesheet.")
+        tree = etree.parse(f"{EXPORTED_SVG}")
+        self.assertEqual(len(tree.xpath("/xmlns:svg/xmlns:path",
+                                        namespaces=SVG_XMLNS)), 1,
                          "Malformed spritesheet.")
 
 

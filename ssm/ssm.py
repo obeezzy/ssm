@@ -15,6 +15,7 @@ from lxml.builder import E
 import sys
 import os
 from typing import List
+from .__version__ import __version__
 
 
 SVG_XMLNS = {"xmlns": "http://www.w3.org/2000/svg"}
@@ -294,27 +295,39 @@ def _list_sprites(*,
 
 def _export_sprites(*sprites,
                     show_use: bool,
+                    export_dir: str = "",
                     spritesheet_filename: str) -> None:
     if not os.path.exists(spritesheet_filename):
         raise RuntimeError(f"Spritesheet '{spritesheet_filename}' "
                            "does not exist.")
+    if export_dir != "" and not os.path.isdir(export_dir):
+        raise RuntimeError("The directory specified does not exist.")
 
     sprites = list(sprites)
     spritesheet = Spritesheet(spritesheet_filename)
 
     for sprite in spritesheet.sprites:
-        if sprite.id in sprites:
-            print(sprite.export(show_use=show_use,
-                                spritesheet_filename=spritesheet_filename),
-                  end="")
+        if sprite.id not in sprites:
+            continue
+
+        sprite_data = sprite.export(show_use=show_use,
+                                    spritesheet_filename=spritesheet_filename)
+        if export_dir != "":
+            with open(f"{export_dir}/{sprite.id}.svg", "w") as f:
+                f.write(sprite_data)
+        else:
+            print(sprite_data, end="")
 
 
 def main() -> None:
     """Runs script.
     """
-    parser = ArgumentParser(prog="ssm.py",
+    parser = ArgumentParser(prog="ssm",
                             description=__doc__,
                             formatter_class=RawDescriptionHelpFormatter)
+    parser.add_argument("--version",
+                        action="version",
+                        version=f"%(prog)s {__version__}")
     subparsers = parser.add_subparsers()
 
     parser_create = subparsers.add_parser("create",
@@ -388,6 +401,11 @@ def main() -> None:
                                "-u",
                                action="store_true",
                                help="Print <use> for HTML")
+    parser_export.add_argument("--dir",
+                               type=str,
+                               metavar="EXPORT_DIR",
+                               default="",
+                               help="Write sprites to directory")
     parser_export.add_argument("sprites",
                                type=str,
                                metavar="SVG_SPRITES",
@@ -420,6 +438,7 @@ def main() -> None:
             elif args._parser == "export":
                 _export_sprites(*args.sprites,
                                 show_use=args.use,
+                                export_dir=args.dir,
                                 spritesheet_filename=(args.f.name
                                                       if args.f is not None
                                                       else ""))

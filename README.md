@@ -23,7 +23,7 @@ $ pip install ssm-svg
 
 ## Usage example
 
-Create spritesheet:
+Create spritesheet `icons.svg` with `search.svg` and `menu.svg` as sprites:
 
 ```bash
 $ python -m ssm create -f icons.svg search.svg menu.svg
@@ -35,46 +35,48 @@ Create spritesheet and overwrite existing file:
 $ python -m ssm create -f icons.svg search.svg menu.svg -F
 ```
 
-Create spritesheet with custom IDs for SVG sprites:
+Create spritesheet with custom ID `hamburger-icon` instead of defaulting to its file name:
 
 ```bash
-$ python -m ssm create -f spritesheet.svg search-icon=search.svg hamburger-icon=menu.svg
+$ python -m ssm create -f icons.svg search.svg hamburger-icon=menu.svg
 ```
 
 List IDs of SVG sprites in spritesheet:
 
 ```bash
-$ python -m ssm list -f spritesheet.svg
+$ python -m ssm list -f icons.svg
 ```
 
 Add SVG sprites to spritesheet:
 
 ```bash
-$ python -m ssm add -f spritesheet.svg facebook.svg instagram.svg
+$ python -m ssm add -f icons.svg facebook.svg instagram.svg
 ```
 
-Add SVG sprites to spritesheet with custom IDs for SVG sprites:
+Remove SVG sprites with IDs `facebook` and `instagram` from spritesheet:
 
 ```bash
-$ python -m ssm add -f spritesheet.svg fb-icon=facebook.svg gram-icon=instagram.svg
+$ python -m ssm remove -f icons.svg facebook instagram
 ```
 
-Remove SVG sprites from spritesheet:
+NOTE: Inserting the same ID more than once would cause an error.
+
+Add SVG sprites to spritesheet with custom ID `fb-icon` instead of defaulting to its file name:
 
 ```bash
-$ python -m ssm remove -f spritesheet.svg fb-icon gram-icon
+$ python -m ssm add -f icons.svg fb-icon=facebook.svg
 ```
 
-Export SVG sprites from spritesheet:
+Export sprite with ID `search` from spritesheet:
 
 ```bash
-$ python -m ssm export -f spritesheet.svg search
+$ python -m ssm export -f icons.svg search
 ```
 
-Export SVG sprites from spritesheet for use in HTML:
+Export sprite with ID `search` from spritesheet for use in HTML:
 
 ```bash
-$ python -m ssm export -f spritesheet.svg search --use
+$ python -m ssm export -f icons.svg search --use
 ```
 
 ## License

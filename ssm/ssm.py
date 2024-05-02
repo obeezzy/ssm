@@ -8,7 +8,7 @@ SVG files, suitable for <use> in HTML rendered by browsers.
 from argparse import (ArgumentParser,
                       FileType,
                       RawDescriptionHelpFormatter)
-from pathlib import PurePosixPath
+from pathlib import Path
 from lxml import etree
 import lxml.html
 from lxml.builder import E
@@ -31,7 +31,7 @@ class Sprite:
                  symbol_node=None):
         self._id = (id
                     if id != ""
-                    else str(PurePosixPath(filename).stem))
+                    else str(Path(filename).stem))
         self._symbol_node = symbol_node
         self._view_box = view_box
         self._load_svg(filename)
@@ -61,7 +61,8 @@ class Sprite:
 
     def export(self,
                *,
-               show_use: bool = False):
+               show_use: bool = False,
+               spritesheet_filename=""):
         """Exports sprite as SVG.
 
         Parameters
@@ -77,7 +78,7 @@ class Sprite:
         svg = None
         if show_use:
             svg = E("svg",
-                    E("use", {"href": f"#{self.id}"}))
+                    E("use", {"href": f"{Path(spritesheet_filename).name}#{self.id}"}))  # noqa
             return lxml.html.tostring(svg,
                                       pretty_print=True).decode()
         else:
@@ -86,7 +87,6 @@ class Sprite:
             svg = E("svg", attrib)
             for child in self._child_nodes:
                 svg.append(child)
-            svg.append(self._child_nodes[0])
         return etree.tostring(svg,
                               pretty_print=True,
                               xml_declaration=True,
@@ -304,7 +304,9 @@ def _export_sprites(*sprites,
 
     for sprite in spritesheet.sprites:
         if sprite.id in sprites:
-            print(sprite.export(show_use=show_use), end="")
+            print(sprite.export(show_use=show_use,
+                                spritesheet_filename=spritesheet_filename),
+                  end="")
 
 
 def main() -> None:

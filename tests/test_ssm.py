@@ -2,6 +2,7 @@ import unittest
 import subprocess
 import os
 import shutil
+from pathlib import Path
 from lxml import etree
 
 
@@ -131,7 +132,7 @@ class TestSsm(unittest.TestCase):
         self.assertTrue(completed_process.returncode == 0,
                         "Failed to export sprite from spritesheet.")
         tree = etree.fromstring(completed_process.stdout)
-        self.assertEqual(len(tree.xpath("/svg/use[@href='#search']")), 1,
+        self.assertEqual(len(tree.xpath(f"/svg/use[@href='{Path(SPRITESHEET_TWO_SPRITES).name}#{SEARCH_ID}']")), 1,  # noqa
                          "Malformed spritesheet.")
 
 

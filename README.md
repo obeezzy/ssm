@@ -10,7 +10,7 @@ __ssm__ is a simple approach to creating and managing SVG spritesheets. It has 5
 * __create__: For creating spritesheets from a list of SVG sprites (i.e. SVG icons etc.)
 * __list__: For listing the SVG sprites stored in a spritesheet
 * __add__: For adding SVG sprites to an existing spritesheet
-* __remove__: For remove SVG sprites from an existing spritesheet
+* __remove__: For removing SVG sprites from an existing spritesheet
 * __export__: For exporting SVG sprites from an existing spritesheet. Can be used for converting a `<symbol>` back into a standalone `<svg>` or to display a format suitable for HTML (using `<use>`).
 
 For more details, run `python -m ssm -h` after installation.

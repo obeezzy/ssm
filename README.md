@@ -27,6 +27,14 @@ Create spritesheet `icons.svg` with `search.svg` and `menu.svg` as sprites:
 
 ```bash
 $ python -m ssm create -f icons.svg search.svg menu.svg
+$ cat icons.svg
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="menu" viewBox="0 0 24 24">...</symbol>
+    <symbol id="search" viewBox="0 0 24 24">...</symbol>
+  </defs>
+</svg>
 ```
 
 Create spritesheet and overwrite existing file:
@@ -39,24 +47,52 @@ Create spritesheet with custom ID `hamburger-icon` instead of defaulting to its 
 
 ```bash
 $ python -m ssm create -f icons.svg search.svg hamburger-icon=menu.svg
+$ cat icons.svg
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="hamburger-icon" viewBox="0 0 24 24">...</symbol>
+    <symbol id="search" viewBox="0 0 24 24">...</symbol>
+  </defs>
+</svg>
 ```
 
 List IDs of SVG sprites in spritesheet:
 
 ```bash
 $ python -m ssm list -f icons.svg
+menu
+search
 ```
 
 Add SVG sprites to spritesheet:
 
 ```bash
 $ python -m ssm add -f icons.svg facebook.svg instagram.svg
+$ cat icons.svg
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="hamburger-icon" viewBox="0 0 24 24">...</symbol>
+    <symbol id="search" viewBox="0 0 24 24">...</symbol>
+    <symbol id="facebook" viewBox="0 0 24 24">...</symbol>
+    <symbol id="instagram" viewBox="0 0 24 24">...</symbol>
+  </defs>
+</svg>
 ```
 
 Remove SVG sprites with IDs `facebook` and `instagram` from spritesheet:
 
 ```bash
 $ python -m ssm remove -f icons.svg facebook instagram
+$ cat icons.svg
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="hamburger-icon" viewBox="0 0 24 24">...</symbol>
+    <symbol id="search" viewBox="0 0 24 24">...</symbol>
+  </defs>
+</svg>
 ```
 
 NOTE: Inserting the same ID more than once would cause an error.
@@ -65,18 +101,42 @@ Add SVG sprites to spritesheet with custom ID `fb-icon` instead of defaulting to
 
 ```bash
 $ python -m ssm add -f icons.svg fb-icon=facebook.svg
+$ cat icons.svg
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="hamburger-icon" viewBox="0 0 24 24">...</symbol>
+    <symbol id="search" viewBox="0 0 24 24">...</symbol>
+    <symbol id="fb-icon" viewBox="0 0 24 24">...</symbol>
+  </defs>
+</svg>
 ```
 
-Export sprite with ID `search` from spritesheet:
+Export sprite with ID `menu` from spritesheet:
 
 ```bash
-$ python -m ssm export -f icons.svg search
+$ python -m ssm export -f icons.svg menu
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">...</svg>
 ```
 
-Export sprite with ID `search` from spritesheet for use in HTML:
+Export sprite with ID `menu` from spritesheet for use in HTML:
 
 ```bash
-$ python -m ssm export -f icons.svg search --use
+$ python -m ssm export -f icons.svg menu --use
+<svg><use href="icons.svg#menu"></use></svg>
+```
+
+Export sprite with IDs `search` and `menu` from spritesheet as `exported_files/search.svg` and `exported_files/menu.svg` respectively:
+
+```bash
+$ python -m ssm export -f icons.svg --dir exported_files search menu
+$ cat exported_files/menu.svg
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">...</svg>
+$ cat exported_files/search.svg
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">...</svg>
 ```
 
 ## License

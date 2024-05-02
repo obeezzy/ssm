@@ -143,11 +143,13 @@ class TestSsm(unittest.TestCase):
                                             "export",
                                             "-f",
                                             f"{SPRITESHEET_TWO_SPRITES}",
-                                            f"{SEARCH_ID}"
                                             "--dir",
-                                            f"{ARTIFACT_DIR}"])
+                                            f"{ARTIFACT_DIR}",
+                                            f"{SEARCH_ID}"])
         self.assertTrue(completed_process.returncode == 0,
                         "Failed to export sprite from spritesheet.")
+        self.assertTrue(os.path.isfile(f"{EXPORTED_SVG}"),
+                        "Failed to export sprite as file.")
         tree = etree.parse(f"{EXPORTED_SVG}")
         self.assertEqual(len(tree.xpath("/xmlns:svg/xmlns:path",
                                         namespaces=SVG_XMLNS)), 1,

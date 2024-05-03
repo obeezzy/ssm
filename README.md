@@ -3,7 +3,7 @@
 SVG spritesheet maker
 
 [![CI](https://github.com/obeezzy/ssm/actions/workflows/main.yml/badge.svg)](https://github.com/obeezzy/ssm/actions/workflows/main.yml)
-[![Deployment to PyPI](https://github.com/obeezzy/ssm/actions/workflows/deploy.yml/badge.svg?branch=v0.0.6)](https://github.com/obeezzy/ssm/actions/workflows/deploy.yml)
+[![Deployment to PyPI](https://github.com/obeezzy/ssm/actions/workflows/deploy.yml/badge.svg?branch=v0.0.7)](https://github.com/obeezzy/ssm/actions/workflows/deploy.yml)
 
 __ssm__ is a command-line tool for creating and managing SVG spritesheets. It has 5 main functions:
 

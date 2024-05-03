@@ -128,13 +128,13 @@ Export sprites with IDs `search` and `menu` from spritesheet as `exported_files/
 
 ```bash
 $ ssm export -f icons.svg --dir exported_files search menu
-$ cat exported_files/menu.svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <!-- "menu" SVG elements -->
-</svg>
 $ cat exported_files/search.svg
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <!-- "search" SVG elements -->
+</svg>
+$ cat exported_files/menu.svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <!-- "menu" SVG elements -->
 </svg>
 ```
 

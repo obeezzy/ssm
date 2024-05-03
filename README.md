@@ -37,7 +37,7 @@ $ cat icons.svg
 </svg>
 ```
 
-Create spritesheet and overwrite existing file:
+Create spritesheet and overwrite existing file (with the `-F` option):
 
 ```bash
 $ ssm create -f icons.svg search.svg menu.svg -F
@@ -46,7 +46,7 @@ $ ssm create -f icons.svg search.svg menu.svg -F
 Create spritesheet containing `search.svg` and `menu.svg`, with custom ID `hamburger-icon` for `menu.svg` (instead of defaulting to its file name):
 
 ```bash
-$ ssm create -f icons.svg search.svg hamburger-icon=menu.svg
+$ ssm create -f icons.svg search.svg hamburger-icon=menu.svg -F
 $ cat icons.svg
 <svg xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -60,7 +60,7 @@ List IDs of sprites in spritesheet:
 
 ```bash
 $ ssm list -f icons.svg
-menu
+hamburger-icon
 search
 ```
 

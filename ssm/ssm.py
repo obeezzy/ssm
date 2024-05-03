@@ -89,9 +89,7 @@ class Sprite:
             for child in self._child_nodes:
                 svg.append(child)
         return etree.tostring(svg,
-                              pretty_print=True,
-                              xml_declaration=True,
-                              encoding="utf-8").decode()
+                              pretty_print=True).decode()
 
     @property
     def id(self) -> str:
@@ -198,9 +196,7 @@ class Spritesheet:
         """
         self._tree = etree.ElementTree(self._root)
         self._tree.write(self._filename,
-                         pretty_print=True,
-                         encoding="utf-8",
-                         xml_declaration=True)
+                         pretty_print=True)
 
     @property
     def filename(self) -> str:

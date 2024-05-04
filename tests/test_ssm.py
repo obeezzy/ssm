@@ -8,13 +8,14 @@ from lxml import etree
 
 SVG_XMLNS = {"xmlns": "http://www.w3.org/2000/svg"}
 TEST_DIR = os.path.dirname(os.path.realpath(__file__))
+ASSET_DIR = f"{TEST_DIR}/assets"
 ARTIFACT_DIR = f"{TEST_DIR}/artifacts"
 SPRITESHEET_NEW = f"{TEST_DIR}/spritesheet_new.svg"
 SPRITESHEET_VOID = f"{ARTIFACT_DIR}/spritesheet_void.svg"
 SPRITESHEET_ONE_SPRITE = f"{ARTIFACT_DIR}/spritesheet_one_sprite.svg"
 SPRITESHEET_TWO_SPRITES = f"{ARTIFACT_DIR}/spritesheet_two_sprites.svg"
-SEARCH_SPRITE = f"{TEST_DIR}/search.svg"
-MENU_SPRITE = f"{TEST_DIR}/menu.svg"
+SEARCH_SPRITE = f"{ASSET_DIR}/search.svg"
+MENU_SPRITE = f"{ASSET_DIR}/menu.svg"
 SEARCH_ID = "search"
 MENU_ID = "menu"
 EXPORTED_SVG = f"{ARTIFACT_DIR}/{SEARCH_ID}.svg"
@@ -24,11 +25,11 @@ class TestSsm(unittest.TestCase):
     def setUp(self):
         if not os.path.exists(ARTIFACT_DIR):
             os.makedirs(ARTIFACT_DIR)
-        shutil.copy(f"{TEST_DIR}/spritesheet_void.svg",
+        shutil.copy(f"{ASSET_DIR}/spritesheet_void.svg",
                     SPRITESHEET_VOID)
-        shutil.copy(f"{TEST_DIR}/spritesheet_one_sprite.svg",
+        shutil.copy(f"{ASSET_DIR}/spritesheet_one_sprite.svg",
                     SPRITESHEET_ONE_SPRITE)
-        shutil.copy(f"{TEST_DIR}/spritesheet_two_sprites.svg",
+        shutil.copy(f"{ASSET_DIR}/spritesheet_two_sprites.svg",
                     SPRITESHEET_TWO_SPRITES)
 
     def tearDown(self):
@@ -46,6 +47,8 @@ class TestSsm(unittest.TestCase):
                                         f"{SEARCH_SPRITE}"]).returncode == 0,
                         "Failed to create spritesheet.")
 
+        self.assertTrue(os.path.isfile(SPRITESHEET_NEW),
+                        "Failed to create spritesheet.")
         tree = etree.parse(SPRITESHEET_NEW)
         self.assertEqual(len(tree.xpath("/xmlns:svg/xmlns:defs/xmlns:symbol[@id='search']", # noqa
                                         namespaces=SVG_XMLNS)), 1,
@@ -64,6 +67,8 @@ class TestSsm(unittest.TestCase):
                              "Failed to list IDs in spritesheet.")
 
     def test_add(self):
+        self.assertTrue(os.path.isfile(SPRITESHEET_VOID),
+                        "Spritesheet does not exist.")
         tree = etree.parse(SPRITESHEET_VOID)
         self.assertEqual(len(tree.xpath("/xmlns:svg/xmlns:defs/xmlns:symbol[@id='menu']", # noqa
                                         namespaces=SVG_XMLNS)), 0,
@@ -84,6 +89,8 @@ class TestSsm(unittest.TestCase):
                          "Malformed spritesheet.")
 
     def test_remove(self):
+        self.assertTrue(os.path.isfile(SPRITESHEET_ONE_SPRITE),
+                        "Spritesheet does not exist.")
         tree = etree.parse(SPRITESHEET_ONE_SPRITE)
         self.assertEqual(len(tree.xpath("/xmlns:svg/xmlns:defs/xmlns:symbol[@id='menu']",  # noqa
                                         namespaces=SVG_XMLNS)), 1,
@@ -148,9 +155,9 @@ class TestSsm(unittest.TestCase):
                                             f"{SEARCH_ID}"])
         self.assertTrue(completed_process.returncode == 0,
                         "Failed to export sprite from spritesheet.")
-        self.assertTrue(os.path.isfile(f"{EXPORTED_SVG}"),
+        self.assertTrue(os.path.isfile(EXPORTED_SVG),
                         "Failed to export sprite as file.")
-        tree = etree.parse(f"{EXPORTED_SVG}")
+        tree = etree.parse(EXPORTED_SVG)
         self.assertEqual(len(tree.xpath("/xmlns:svg/xmlns:path",
                                         namespaces=SVG_XMLNS)), 1,
                          "Malformed spritesheet.")
